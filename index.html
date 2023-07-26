@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ECharts Data Switch</title>
+  <!-- Add ECharts library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
+</head>
+<body>
+  <div>
+    <button id="past7DaysBtn">Past 7 Days</button>
+    <button id="past30DaysBtn">Past 30 Days</button>
+  </div>
+  <div id="chartContainer" style="width: 600px; height: 400px;"></div>
+
+  <script>
+    // Generate random data for past 7 days and 30 days
+    function generateRandomData(numDays) {
+      const data = [];
+      for (let i = 1; i <= numDays; i++) {
+        data.push(Math.floor(Math.random() * 1000));
+      }
+      return data;
+    }
+
+    // Initialize ECharts
+    const chartContainer = document.getElementById('chartContainer');
+    const myChart = echarts.init(chartContainer);
+
+    // Initial data for the chart
+    const initialData7Days = generateRandomData(7);
+    const initialData30Days = generateRandomData(30);
+
+    // Option for the chart
+    const option = {
+      title: {
+        text: 'Random Data for Past 7 Days/30 Days',
+      },
+      xAxis: {
+        type: 'category',
+        data: Array.from({ length: 7 }, (_, i) => `Day ${i + 1}`), // Replace '7' with '30' for 30 days
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: 'Data',
+          type: 'line',
+          data: initialData7Days, // Initial data for 7 days
+        },
+      ],
+    };
+
+    // Set initial option
+    myChart.setOption(option);
+
+    // Event listener for the buttons
+    document.getElementById('past7DaysBtn').addEventListener('click', () => {
+      option.xAxis.data = Array.from({ length: 7 }, (_, i) => `Day ${i + 1}`);
+      option.series[0].data = generateRandomData(7);
+      myChart.setOption(option);
+    });
+
+    document.getElementById('past30DaysBtn').addEventListener('click', () => {
+      option.xAxis.data = Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`);
+      option.series[0].data = generateRandomData(30);
+      myChart.setOption(option);
+    });
+  </script>
+</body>
+</html>
